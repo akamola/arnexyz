@@ -183,6 +183,17 @@ function arnexyz_breadcrumb() {
 }
 
 /**
+ * Add custom styles to the classic editor
+ *
+ * @since 2.1.0
+ * @see https://themeisle.com/blog/wordpress-editor-emulate-website/
+ */
+function arnexyz_editor_style() {
+	add_editor_style( 'editor-style.css' );
+}
+add_action( 'admin_init', 'arnexyz_editor_style' );
+
+/**
  * Remove the brackets around the categories post count
  *
  * @since arnexyz 1.2.0
