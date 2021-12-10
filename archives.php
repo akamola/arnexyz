@@ -25,6 +25,7 @@ get_header(); ?>
 		<?php endif; ?>
 
 		<section class="search">
+			<h2><?php _e( 'Search', 'arnexyz' ); ?></h2>
 			<?php get_search_form(); ?>
 		</section>
 
@@ -37,12 +38,14 @@ get_header(); ?>
 
 		<section class="categories">
 			<h2><?php _e( 'Categories', 'arnexyz' ); ?></h2>
-			<?php wp_list_categories( array( // @see https://developer.wordpress.org/reference/functions/wp_list_categories/
-				'feed'					=> '<abbr title="Really Simple Syndication">RSS</abbr>',
-				'show_count'			=> true,
-				'title_li'				=> '',
-				'use_desc_for_title'	=> true
-			)); ?>
+			<ul>
+				<?php wp_list_categories( array( // @see https://developer.wordpress.org/reference/functions/wp_list_categories/
+					'feed'					=> '<abbr title="Really Simple Syndication">RSS</abbr>',
+					'show_count'			=> true,
+					'title_li'				=> '',
+					'use_desc_for_title'	=> true
+				)); ?>
+			</ul>
 		</section>
 
 		<section class="post-formats">
