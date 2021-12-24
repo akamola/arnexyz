@@ -479,3 +479,182 @@ function arnexyz_remove_comments_useragent( $comment_author_agent ) {
 	return '';
 }
 add_filter( 'pre_comment_user_agent', 'arnexyz_remove_comments_useragent' );
+
+//
+// Theme options page
+//
+
+/**
+ * Setup the theme options page
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_init() {
+	// Register options
+
+	register_setting(
+		$option_group	= 'arnexyz_options',
+		$option_name	= 'arnexyz_theme_options'
+	);
+
+	//
+	// Sections
+	//
+
+	// Footer Options
+
+	// Section
+	add_settings_section(
+		$id			= 'arnexyz_options_footer',
+		$title		= __( 'Footer', 'arnexyz' ),
+		$callback	= 'arnexyz_theme_options_section_footer_description',
+		$page		= 'arnexyz_options'
+	);
+
+	// Fields
+	add_settings_field(
+		$id			= 'show_cc_license',
+		$title		= __( 'Show Creative Commons License', 'arnexyz' ),
+		$callback	= 'arnexyz_theme_options_field_cc_license',
+		$page		= 'arnexyz_options',
+		$section	= 'arnexyz_options_footer',
+		$args		= array(
+			'label_for' => 'show_cc_license'
+		)
+	);
+	add_settings_field(
+		$id			= 'show_rss_link',
+		$title		= __( 'Show link to RSS feed', 'arnexyz' ),
+		$callback	= 'arnexyz_theme_options_field_rss_link',
+		$page		= 'arnexyz_options',
+		$section	= 'arnexyz_options_footer',
+		$args		= array(
+			'label_for' => 'show_rss_link'
+		)
+	);
+	add_settings_field(
+		$id			= 'show_html_validation_link',
+		$title		= __( 'Show HTML validation link', 'arnexyz' ),
+		$callback	= 'arnexyz_theme_options_field_html_validation_link',
+		$page		= 'arnexyz_options',
+		$section	= 'arnexyz_options_footer',
+		$args		= array(
+			'label_for' => 'show_html_validation_link'
+		)
+	);
+	add_settings_field(
+		$id			= 'show_css_validation_link',
+		$title		= __( 'Show CSS validation link', 'arnexyz' ),
+		$callback	= 'arnexyz_theme_options_field_css_validation_link',
+		$page		= 'arnexyz_options',
+		$section	= 'arnexyz_options_footer',
+		$args		= array(
+			'label_for' => 'show_css_validation_link'
+		)
+	);
+}
+add_action( 'admin_init', 'arnexyz_theme_options_init' );
+
+/**
+ * Add menu item to the admin menu
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_menuitem() {
+	add_theme_page(
+		__( 'Options', 'arnexyz' ),
+		__( 'Options', 'arnexyz' ),
+		'edit_theme_options',
+		'theme-options',
+		'arnexyz_theme_options_page'
+	);
+}
+add_action( 'admin_menu', 'arnexyz_theme_options_menuitem' );
+
+/**
+ * The theme options page
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_page() {
+	?>
+	<div class="wrap">
+		<h1>arnexyz › <?php _e( 'Theme Options', 'arnexyz' ); ?></h1>
+		<form action="options.php" method="post">
+
+			<?php
+				settings_fields( 'arnexyz_options' );
+				do_settings_sections( 'arnexyz_options' );
+				submit_button();
+			?>
+
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * Print the description of the theme option section "Footer"
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_section_footer_description() {
+	_e( 'Modify the footer', 'arnexyz' );
+}
+
+/**
+ * Print the HTML for the theme options for "Show Creative Commons license"
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_field_cc_license() {
+	$options = get_option( 'arnexyz_theme_options' );
+	?>
+	<input type="checkbox" name="arnexyz_theme_options[show_cc_license]" value="1"<?php if ( isset( $options['show_cc_license'] ) ) { checked( $options['show_cc_license'], 1 ); } ?>>
+	<p class="description" id="show_cc_license-description">Requires the WordPress plugin for <a href="https://de.wordpress.org/plugins/creative-commons/" target="_blank">Creative Commons</a>.</p>
+	<?php
+}
+
+/**
+ * Print the HTML for the theme option "Show CSS validation link"
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_field_css_validation_link() {
+	$options = get_option( 'arnexyz_theme_options' );
+	?>
+	<input type="checkbox" name="arnexyz_theme_options[show_css_validation_link]" value="1"<?php if ( isset( $options['show_css_validation_link'] ) ) { checked( $options['show_css_validation_link'], 1 ); } ?>>
+	<?php
+}
+
+/**
+ * Print the HTML for the theme option "Show HTML validation link"
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_field_html_validation_link() {
+	$options = get_option( 'arnexyz_theme_options' );
+	?>
+	<input type="checkbox" name="arnexyz_theme_options[show_html_validation_link]" value="1"<?php if ( isset( $options['show_html_validation_link'] ) ) { checked( $options['show_html_validation_link'], 1 ); } ?>>
+	<?php
+}
+
+/**
+ * Print the HTML for the theme option "Show link to RSS feed"
+ *
+ * @since arnexyz 2.3.0
+ * @return void
+ */
+function arnexyz_theme_options_field_rss_link() {
+	$options = get_option( 'arnexyz_theme_options' );
+	?>
+	<input type="checkbox" name="arnexyz_theme_options[show_rss_link]" value="1"<?php if ( isset( $options['show_rss_link'] ) ) { checked( $options['show_rss_link'], 1 ); } ?>>
+	<?php
+}
