@@ -290,6 +290,35 @@ function arnexyz_display_status_label( $statuses ) {
 add_filter( 'display_post_states', 'arnexyz_display_status_label' );
 
 /**
+ * Get date/year of the first post
+ * @see https://alex.leonard.ie/2010/07/27/wordpress-tip-get-the-date-of-your-first-post/
+ *
+ * @since arne.xyz 2.2.0
+ * @return string Year of the first post
+ */
+function arnexyz_get_first_post_date( $format = 'Y' ) {
+	$args = array(
+		'numberposts'	=> -1,
+		'post_status'	=> 'publish',
+		'order'			=> 'ASC'
+	);
+
+	// Get all posts in order of first to last
+	$all_posts = get_posts( $args );
+
+	// Extract first post from array
+	$first_post = $all_posts[0];
+
+	// Assign first post date to var
+	$first_post_date = $first_post->post_date;
+
+	// Return date in required format
+	$output = date( $format, strtotime( $first_post_date ) );
+
+	return $output;
+}
+
+/**
  * Add custom JavaScript that depends on jQuery.
  *
  * @see https://codex.wordpress.org/Plugin_API/Action_Reference/wp_enqueue_scripts
